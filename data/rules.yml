@@ -1,0 +1,48 @@
+version: "3.1"
+
+rules:
+- rule: ترحيب عند بداية المحادثة
+  conversation_start: true
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- rule: وداع عند نهاية المحادثة
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: الرد على طلب حجز طاولة
+  steps:
+  - intent: book_table
+  - action: utter_ask_guests_number
+
+- rule: سؤال عن التاريخ بعد تحديد عدد الأشخاص
+  condition:
+  - active_loop: null
+  - slot_was_set:
+    - guests_number: true
+  steps:
+  - action: utter_ask_reservation_date
+
+- rule: سؤال عن الوقت بعد تحديد التاريخ
+  condition:
+  - active_loop: null
+  - slot_was_set:
+    - reservation_date: true
+  steps:
+  - action: utter_ask_reservation_time
+
+- rule: سؤال عن الاسم بعد تحديد الوقت
+  condition:
+  - active_loop: null
+  - slot_was_set:
+    - reservation_time: true
+  steps:
+  - action: utter_ask_customer_name
+
+- rule: إنشاء الحجز بعد التأكيد
+  steps:
+  - intent: confirm
+  - action: action_create_reservation
+  - action: utter_booking_confirmed

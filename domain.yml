@@ -1,0 +1,109 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - book_table
+  - inform
+  - confirm
+  - deny
+
+entities:
+  - number
+  - time
+  - date
+  - name
+
+slots:
+  guests_number:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: number
+  reservation_time:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: time
+  reservation_date:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: date
+        
+  customer_name:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: name
+    
+  available_table:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: custom
+      
+  has_availability:
+    type: bool
+    influence_conversation: true
+    initial_value: false
+    mappings:
+      - type: custom
+  
+  reservation_id:
+    type: float
+    mappings:
+      - type: custom
+
+responses:
+  utter_greet:
+    - text: "مرحبا بك في مطعمنا! كيف يمكنني مساعدتك اليوم؟"
+
+  utter_goodbye:
+    - text: "شكرا لك، نتطلع لرؤيتك قريبا!"
+
+  utter_ask_guests_number:
+    - text: "لكم شخص تريد حجز طاولة؟"
+
+  utter_ask_reservation_time:
+    - text: "في أي وقت تريد الحجز؟"
+
+  utter_ask_reservation_date:
+    - text: "في أي تاريخ تريد الحجز؟"
+    
+  utter_ask_customer_name:
+    - text: "ما هو اسمك من فضلك؟"
+
+  utter_confirm_booking:
+    - text: "هل تريد تأكيد الحجز لـ {guests_number} أشخاص في تاريخ {reservation_date} الساعة {reservation_time}؟"
+
+  utter_booking_confirmed:
+    - text: "تم تأكيد حجزك بنجاح! رقم الحجز الخاص بك هو {reservation_id}. نتطلع لاستقبالك."
+
+  utter_no_availability:
+    - text: "آسف، لا يوجد طاولات متاحة لـ {guests_number} أشخاص في {reservation_date} الساعة {reservation_time}. هل تريد تجربة وقت آخر؟"
+
+  utter_default:
+    - text: "آسف، لم أفهم. هل يمكنك إعادة صياغة طلبك؟"
+
+actions:
+  - action_check_availability
+  - action_create_reservation
+  - utter_greet
+  - utter_goodbye
+  - utter_ask_guests_number
+  - utter_ask_reservation_time
+  - utter_ask_reservation_date
+  - utter_ask_customer_name
+  - utter_confirm_booking
+  - utter_booking_confirmed
+  - utter_no_availability
+  - utter_default
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

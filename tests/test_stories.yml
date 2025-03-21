@@ -1,0 +1,9 @@
+#### This file contains tests to evaluate that your bot behaves as expected.
+#### If you want to learn more, please see the docs: https://rasa.com/docs/rasa/testing-your-assistant
+
+stories:
+- story: حجز طاولة
+  steps:
+  - intent: book_table
+  - action: action_check_availability
+  - action: action_confirm_booking
