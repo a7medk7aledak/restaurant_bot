@@ -2,11 +2,11 @@ import sqlite3
 import datetime
 
 def create_database():
-    """إنشاء قاعدة بيانات SQLite جديدة مع جدول الحجوزات"""
+    """Create a new SQLite database with a reservations table."""
     conn = sqlite3.connect('restaurant.db')
     cursor = conn.cursor()
     
-    # إنشاء جدول للطاولات
+    # Create a tables table
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS tables (
         table_id INTEGER PRIMARY KEY,
@@ -14,7 +14,7 @@ def create_database():
     )
     ''')
     
-    # إنشاء جدول للحجوزات
+    # Create a reservations table
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS reservations (
         reservation_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -28,7 +28,7 @@ def create_database():
     )
     ''')
     
-    # إضافة بعض الطاولات الافتراضية
+    # Insert some default tables
     tables = [
         (1, 2), (2, 2), (3, 4), (4, 4), (5, 6), (6, 8)
     ]
@@ -38,14 +38,14 @@ def create_database():
     conn.commit()
     conn.close()
     
-    print("تم إنشاء قاعدة البيانات بنجاح")
+    print("Database created successfully.")
 
 def check_availability(guests_number, date, time):
-    """التحقق من توفر طاولات مناسبة للحجز"""
+    """Check the availability of tables for reservation."""
     conn = sqlite3.connect('restaurant.db')
     cursor = conn.cursor()
     
-    # البحث عن الطاولات المناسبة التي تستوعب عدد الضيوف
+    # Find a suitable table that can accommodate the number of guests
     cursor.execute('''
     SELECT table_id FROM tables 
     WHERE capacity >= ? AND table_id NOT IN (
@@ -64,7 +64,7 @@ def check_availability(guests_number, date, time):
     return None
 
 def make_reservation(table_id, customer_name, guests_number, date, time):
-    """إنشاء حجز جديد في قاعدة البيانات"""
+    """Create a new reservation in the database."""
     conn = sqlite3.connect('restaurant.db')
     cursor = conn.cursor()
     
@@ -82,6 +82,6 @@ def make_reservation(table_id, customer_name, guests_number, date, time):
     
     return reservation_id
 
-# إنشاء قاعدة البيانات عند استدعاء الملف مباشرة
+# Create the database when the script is run directly
 if __name__ == "__main__":
     create_database()
